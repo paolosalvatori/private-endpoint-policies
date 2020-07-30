@@ -1,0 +1,44 @@
+{
+    "properties": {
+      "name": "60d21c4f-21a3-4d94-85f4-b924e6aeeda4",
+      "displayName": "Storage Accounts should use a private endpoint",
+      "policyType": "Custom",
+      "mode": "Indexed",
+      "description": "This policy audits or denies any Storage Account configured to use public endpoints.",
+      "metadata": {
+        "version": "1.0.0",
+        "category": "Network"
+      },
+      "policyRule": {
+        "if": {
+          "allOf": [{
+              "field": "type",
+              "equals": "Microsoft.Storage/storageAccounts"
+            },
+            {
+              "anyOf": [{
+                "field": "Microsoft.Storage/storageAccounts/networkAcls.defaultAction",
+                "notEquals": "Deny"
+              }]
+            }
+          ]
+        },
+        "then": {
+          "effect": "[[parameters('effect')]",
+          "details": {
+            "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
+            "existenceCondition": {
+              "allOf": [{
+                "field": "Microsoft.Storage/storageAccounts/privateEndpointConnections/privateEndpoint.id",
+                "like": "[[concat(field('fullName'), '/privateEndpointConnections/*')]"
+              },
+                {
+                "field": "Microsoft.Storage/storageAccounts/privateEndpointConnections/privateLinkServiceConnectionState.status",
+                "equals": "Approved"
+              }]
+            }
+          }
+        }
+      }
+    }
+  }

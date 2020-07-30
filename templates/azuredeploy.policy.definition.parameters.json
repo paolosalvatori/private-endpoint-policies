@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "policyName": {
+      "value": "storage-accounts-should-use-a-private-endpoint-policy-definition"
+    },
+    "policyDisplayName": {
+      "value": "Storage Accounts should use a private endpoint"
+    },
+    "policyDescription": {
+      "value": "This policy audits any Storage Account not configured to use a private endpoint."
+    },
+    "policyEffect": {
+      "value": "AuditIfNotExists"
+    }
+  }
+}
