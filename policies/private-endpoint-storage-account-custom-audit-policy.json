@@ -21,49 +21,20 @@
           "displayName": "Effect",
           "description": "Enable or disable the execution of the policy"
         }
-      },
-      "existenceScope": {
-        "type": "string",
-        "defaultValue": "subscription",
-        "allowedValues": [
-          "subscription",
-          "resourcegroup"
-        ],
-        "metadata": {
-          "displayName": "Existence Scope",
-          "description": "Specifies the existence scope for the related resource"
-        }
       }
     },
     "policyRule": {
       "if": {
-        "allOf": [{
-            "field": "type",
-            "equals": "Microsoft.Storage/storageAccounts"
-          },
-          {
-            "anyOf": [{
-              "field": "Microsoft.Storage/storageAccounts/networkAcls.defaultAction",
-              "notEquals": "Deny"
-            }]
-          }
-        ]
+        "field": "type",
+        "equals": "Microsoft.Storage/storageAccounts"
       },
       "then": {
-        "effect": "[parameters('effect')]",
+        "effect": "[[parameters('effect')]",
         "details": {
           "type": "Microsoft.Storage/storageAccounts/privateEndpointConnections",
-          "existenceScope": "[parameters('existenceScope')]",
           "existenceCondition": {
-            "allOf": [{
-                "field": "Microsoft.Storage/storageAccounts/privateEndpointConnections/privateEndpoint.id",
-                "like": "[[concat(field('fullName'), '/', 'privateEndpointConnections/', '*')]"
-              },
-              {
-                "field": "Microsoft.Storage/storageAccounts/privateEndpointConnections/privateLinkServiceConnectionState.status",
-                "equals": "Approved"
-              }
-            ]
+            "field": "Microsoft.Storage/storageAccounts/privateEndpointConnections/privateLinkServiceConnectionState.status",
+            "equals": "Approved"
           }
         }
       }
