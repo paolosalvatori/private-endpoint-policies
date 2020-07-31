@@ -54,7 +54,7 @@ principalId=$(az policy assignment show \
     --output tsv)
 
 if [[ -n $principalId ]]; then
-    echo "[$principalId] principal id of the system-assigned managed identity of the [$policyAssignmentName] policy assignment successfully retrieved"
+    echo -e "[$principalId] principal id of the system-assigned managed identity of the \n[$policyAssignmentName] policy assignment successfully retrieved"
 else
     echo "Failed to retrieve the principal id of the system-assigned managed identity of the [$policyAssignmentName]"
     exit
@@ -89,13 +89,13 @@ for roleDefinitionId in ${roleDefinitionIds[@]}; do
         roleDefinitionId="/subscriptions/$subscriptionId$roleDefinitionId"
     fi
 
-    echo "Assigning [$roleDefinitionId] role to the [$principalId] system-assigned managed identity of the [$policyAssignmentName] policy assignment on [$policyScope] scope..."
+    echo -e "Assigning [$roleDefinitionId] role\n to the [$principalId] system-assigned managed identity of the \n[$policyAssignmentName] policy assignment on [$policyScope] scope..."
 
     az role assignment create --assignee "$principalId" --role "$roleDefinitionId" --scope "$policyScope" --only-show-errors
 
     if [[ $? == 0 ]]; then
-        echo "[$roleDefinitionId] role successfully assigned to the [$principalId] system-assigned managed identity of the [$policyAssignmentName] policy assignment on [$policyScope] scope"
+        echo -e "[$roleDefinitionId] role\n successfully assigned to the [$principalId] system-assigned managed identity of the \n[$policyAssignmentName] policy assignment on [$policyScope] scope"
     else
-        echo "Failed to assign the [$roleDefinitionId] role to the [$principalId] system-assigned managed identity of the [$policyAssignmentName] policy assignment on [$policyScope] scope"
+        echo -e "Failed to assign the [$roleDefinitionId] role\n to the [$principalId] system-assigned managed identity of the \n[$policyAssignmentName] policy assignment on [$policyScope] scope"
     fi
 done
