@@ -4,8 +4,8 @@
 location="WestEurope"
 
 # ARM template and parameters files
-template="../templates/azuredeploy.policy.definition.json"
-parameters="../templates/azuredeploy.policy.definition.parameters.json"
+template="../../templates/auditIfNotExists/azuredeploy.policy.definition.json"
+parameters="../../templates/auditIfNotExists/azuredeploy.policy.definition.parameters.json"
 
 # SubscriptionId of the current subscription
 subscriptionId=$(az account show --query id --output tsv)

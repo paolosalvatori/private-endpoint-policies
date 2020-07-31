@@ -1,0 +1,168 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "policyName": {
+      "type": "string",
+      "defaultValue": "storage-account-pe-should-use-pdzg-policy-definition",
+      "metadata": {
+        "description": "Specifies the name of the Azure Policy."
+      }
+    },
+    "policyDisplayName": {
+      "type": "string",
+      "defaultValue": "Resource Delete Test Policy",
+      "metadata": {
+        "description": "Specifies the display name of the Azure Policy."
+      }
+    },
+    "policyDescription": {
+      "type": "string",
+      "defaultValue": "Creates a network security group in the same resource group of the storage account that triggered the policy evaluaton.",
+      "metadata": {
+        "description": "Specifies the description of the Azure Policy."
+      }
+    },
+    "policyEffect": {
+      "type": "string",
+      "defaultValue": "deployIfNotExists",
+      "allowedValues": [
+        "deployIfNotExists",
+        "disabled"
+      ],
+      "metadata": {
+        "description": "Enable or disable the execution of the policy"
+      }
+    },
+    "privateDnsZoneId": {
+      "type": "string",
+      "metadata": {
+        "description": "Specifies the resource if of the PrivateDnsZone referenced by the PrivateDnsZoneGroup resource."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/policyDefinitions",
+      "apiVersion": "2019-06-01",
+      "name": "[parameters('policyName')]",
+      "properties": {
+        "displayName": "[parameters('policyDisplayName')]",
+        "description": "[parameters('policyDescription')]",
+        "policyType": "Custom",
+        "metadata": {
+          "class": "Samples"
+        },
+        "mode": "All",
+        "parameters": {
+          "effect": {
+            "type": "string",
+            "defaultValue": "[parameters('policyEffect')]",
+            "allowedValues": [
+              "deployIfNotExists",
+              "disabled"
+            ],
+            "metadata": {
+              "displayName": "Effect",
+              "description": "Enable or disable the execution of the policy"
+            }
+          },
+          "privateDnsZoneId": {
+            "type": "String",
+            "defaultValue": "[parameters('privateDnsZoneId')]",
+            "metadata": {
+              "displayName": "Specifies the resource if of the PrivateDnsZone referenced by the PrivateDnsZoneGroup resource.",
+              "strongType": "Microsoft.Network/privateDnsZones"
+            }
+          }
+        },
+        "policyRule": {
+          "if": {
+            "allOf": [
+              {
+                "field": "type",
+                "equals": "Microsoft.Network/privateEndpoints"
+              },
+              {
+                "count": {
+                  "field": "Microsoft.Network/privateEndpoints/privateLinkServiceConnections[*].groupIds[*]",
+                  "where": {
+                    "field": "Microsoft.Network/privateEndpoints/privateLinkServiceConnections[*].groupIds[*]",
+                    "equals": "blob"
+                  }
+                },
+                "greaterOrEquals": 1
+              }
+            ]
+          },
+          "then": {
+            "effect": "[[parameters('effect')]",
+            "details": {
+              "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+              "roleDefinitionIds": [
+                "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+              ],
+              "existenceCondition": {
+                "allOf": [
+                  {
+                    "field": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups/privateDnsZoneConfigs[*].privateDnsZoneId",
+                    "equals": "[[parameters('privateDnsZoneId')]"
+                  }
+                ]
+              },
+              "deployment": {
+                "properties": {
+                  "mode": "incremental",
+                  "parameters": {
+                    "privateDnsZoneId": {
+                      "value": "[[parameters('privateDnsZoneId')]"
+                    },
+                    "privateEndpointName": {
+                      "value": "[[field('name')]"
+                    },
+                    "location": {
+                      "value": "[[field('location')]"
+                    }
+                  },
+                  "template": {
+                    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                      "privateDnsZoneId": {
+                        "type": "string"
+                      },
+                      "privateEndpointName": {
+                        "type": "string"
+                      },
+                      "location": {
+                        "type": "string"
+                      }
+                    },
+                    "resources": [
+                      {
+                        "name": "[[concat(parameters('privateEndpointName'), '/deployedByPolicy')]",
+                        "type": "Microsoft.Network/privateEndpoints/privateDnsZoneGroups",
+                        "apiVersion": "2020-05-01",
+                        "location": "[[parameters('location')]",
+                        "properties": {
+                          "privateDnsZoneConfigs": [
+                            {
+                              "name": "storageBlob-privateDnsZone",
+                              "properties": {
+                                "privateDnsZoneId": "[[parameters('privateDnsZoneId')]"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

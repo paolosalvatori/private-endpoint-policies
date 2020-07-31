@@ -6,8 +6,8 @@ policyDefinitionName="storage-accounts-should-use-a-private-endpoint-policy-defi
 location="WestEurope"
 
 # ARM template and parameters files
-template="../templates/azuredeploy.policy.assignment.json"
-parameters="../templates/azuredeploy.policy.assignment.parameters.json"
+template="../../templates/auditIfNotExists/azuredeploy.policy.assignment.json"
+parameters="../../templates/auditIfNotExists/azuredeploy.policy.assignment.parameters.json"
 
 # SubscriptionId of the current subscription
 subscriptionId=$(az account show --query id --output tsv)

@@ -25,10 +25,10 @@
     },
     "policyEffect": {
       "type": "string",
-      "defaultValue": "AuditIfNotExists",
+      "defaultValue": "auditIfNotExists",
       "allowedValues": [
-        "AuditIfNotExists",
-        "Disabled"
+        "auditIfNotExists",
+        "disabled"
       ],
       "metadata": {
         "description": "Enable or disable the execution of the policy"
@@ -53,8 +53,8 @@
             "type": "string",
             "defaultValue": "[parameters('policyEffect')]",
             "allowedValues": [
-              "AuditIfNotExists",
-              "Disabled"
+              "auditIfNotExists",
+              "disabled"
             ],
             "metadata": {
               "displayName": "Effect",

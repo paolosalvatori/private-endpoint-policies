@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "policyName": {
+      "value": "storage-account-pe-should-use-pdzg-policy-definition"
+    },
+    "policyDisplayName": {
+      "value": "Storage Account Private Endpoints should use a PrivateDNSZoneGroup"
+    },
+    "policyDescription": {
+      "value": "This policy deploys if not exists a PrivateDnsZoneGroup for storage account private endpoints."
+    },
+    "policyEffect": {
+      "value": "deployIfNotExists"
+    },
+    "privateDnsZoneId": {
+      "value": "/subscriptions/1a45a694-ae23-4650-9774-89a571c462f6/resourceGroups/blobprivateendpointrg/providers/Microsoft.Network/privateDnsZones/privatelink.blob.core.windows.net"
+    }
+  }
+}

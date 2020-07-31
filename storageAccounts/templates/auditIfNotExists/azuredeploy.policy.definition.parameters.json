@@ -12,7 +12,7 @@
       "value": "This policy audits any Storage Account not configured to use a private endpoint."
     },
     "policyEffect": {
-      "value": "AuditIfNotExists"
+      "value": "auditIfNotExists"
     }
   }
 }

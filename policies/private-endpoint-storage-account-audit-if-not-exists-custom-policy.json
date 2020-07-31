@@ -1,6 +1,6 @@
 {
   "properties": {
-    "name": "60d21c4f-21a3-4d94-85f4-b924e6aeeda4",
+    "name": "storage-accounts-should-use-a-private-endpoint-policy-definition",
     "displayName": "Storage Accounts should use a private endpoint",
     "policyType": "Custom",
     "mode": "Indexed",
@@ -12,10 +12,10 @@
     "parameters": {
       "effect": {
         "type": "string",
-        "defaultValue": "AuditIfNotExists",
+        "defaultValue": "auditIfNotExists",
         "allowedValues": [
-          "AuditIfNotExists",
-          "Disabled"
+          "auditIfNotExists",
+          "disabled"
         ],
         "metadata": {
           "displayName": "Effect",
