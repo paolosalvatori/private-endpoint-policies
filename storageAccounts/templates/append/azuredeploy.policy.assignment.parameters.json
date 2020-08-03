@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "westeurope"
+    },
+    "policyAssignmentName": {
+      "value": "storage-account-default-action-should-be-deny-assignment"
+    },
+    "policyDefinitionName": {
+      "value": "storage-account-default-action-should-be-deny-definition"
+    },
+    "policyScope": {
+      "value": "/subscriptions/1a45a694-ae23-4650-9774-89a571c462f6"
+    }
+  }
+}
